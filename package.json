@@ -1,0 +1,11 @@
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "lite-server --port 3000"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
