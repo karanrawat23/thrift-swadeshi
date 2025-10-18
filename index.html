@@ -8,47 +8,99 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
       <h1 class="logo">Thrift<span class="accent">+</span></h1>
+
+      <nav class="nav" aria-label="Primary">
+        <button class="hamburger" aria-label="Open menu">☰</button>
+        <ul class="nav-list">
+          <li><button class="filter-btn" data-cat="all">All</button></li>
+          <li><button class="filter-btn" data-cat="tops">Tops</button></li>
+          <li><button class="filter-btn" data-cat="bottoms">Bottoms</button></li>
+          <li><button class="filter-btn" data-cat="footwear">Footwear</button></li>
+        </ul>
+      </nav>
+
       <div class="actions">
-        <input id="search" type="search" placeholder="Search items..." />
-        <button id="cartButton" class="cart-btn">Cart (<span id="cartCount">0</span>)</button>
+        <div class="search-wrap" role="search">
+          <input id="search" type="search" placeholder="Search items..." autocomplete="off" aria-label="Search items" />
+          <ul id="suggestions" class="suggestions" role="listbox" aria-hidden="true"></ul>
+        </div>
+
+        <select id="sort" aria-label="Sort products">
+          <option value="default">Sort</option>
+          <option value="price-asc">Price ↑</option>
+          <option value="price-desc">Price ↓</option>
+          <option value="name">Name</option>
+        </select>
+
+        <button id="cartButton" class="cart-btn" aria-label="Open cart">Cart (<span id="cartCount">0</span>)</button>
       </div>
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main">
     <section class="hero">
       <div class="hero-inner">
-        <h2>Curated second‑hand finds — sustainably stylish</h2>
-        <p>Unique pieces refreshed every week. Discover your new favorite.</p>
+        <h2>Curated activewear — sustainably stylish</h2>
+        <p>Designed for comfort, selected for value.</p>
       </div>
     </section>
 
-    <section id="products" class="product-grid">
+    <section id="products" class="product-grid" aria-live="polite">
       <!-- Product cards will render here -->
     </section>
   </main>
+
+  <aside id="cartPanel" class="cart-panel" aria-hidden="true">
+    <header>
+      <h3>Your Cart</h3>
+      <button id="closeCart" aria-label="Close cart">✕</button>
+    </header>
+    <div id="cartItems" class="cart-items"></div>
+    <footer>
+      <div class="cart-total">Total: <span id="cartTotal">$0</span></div>
+      <button id="checkout" class="checkout">Checkout</button>
+    </footer>
+  </aside>
+
+  <div id="overlay" class="overlay" hidden></div>
+
+  <template id="product-template">
+    <article class="card" tabindex="0">
+      <div class="card-media">
+        <img class="card-img" src="" alt="product" loading="lazy" />
+      </div>
+      <div class="card-body">
+        <h3 class="card-title"></h3>
+        <p class="card-price"></p>
+        <div class="card-actions">
+          <button class="view-btn">View</button>
+          <button class="add-btn">Add to cart</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <div id="productModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button id="closeModal" class="modal-close" aria-label="Close">✕</button>
+      <img id="modalImg" src="" alt="" />
+      <div class="modal-body">
+        <h3 id="modalTitle"></h3>
+        <p id="modalPrice"></p>
+        <p id="modalDesc" class="muted">High-quality second-hand athletic wear.</p>
+        <button id="modalAdd" class="add-btn">Add to cart</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="container">
       <p>© <span id="year"></span> My Project — Thrift Store</p>
     </div>
   </footer>
-
-  <template id="product-template">
-    <article class="card">
-      <div class="card-media">
-        <img class="card-img" src="" alt="product" />
-      </div>
-      <div class="card-body">
-        <h3 class="card-title"></h3>
-        <p class="card-price"></p>
-        <button class="add-btn">Add to cart</button>
-      </div>
-    </article>
-  </template>
 
   <script src="script.js"></script>
 </body>
