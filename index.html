@@ -3,44 +3,58 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Project — Thrift Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <title>Thrift — Activewear</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <h1 class="logo">Thrift<span class="accent">+</span></h1>
+      <div class="brand">
+        <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+        <h1 class="logo">Thrift<span class="accent">.</span></h1>
+      </div>
 
-      <nav class="nav" aria-label="Primary">
-        <button class="hamburger" aria-label="Open menu">☰</button>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
         <ul class="nav-list">
-          <li><button class="filter-btn" data-cat="all">All</button></li>
+          <li><button class="filter-btn" data-cat="all" aria-pressed="true">All</button></li>
           <li><button class="filter-btn" data-cat="tops">Tops</button></li>
           <li><button class="filter-btn" data-cat="bottoms">Bottoms</button></li>
           <li><button class="filter-btn" data-cat="footwear">Footwear</button></li>
         </ul>
       </nav>
 
-      <div class="actions">
-        <div class="search-wrap" role="search">
-          <input id="search" type="search" placeholder="Search items..." autocomplete="off" aria-label="Search items" />
+      <div class="controls">
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="Search items..." autocomplete="off" aria-label="Search items">
           <ul id="suggestions" class="suggestions" role="listbox" aria-hidden="true"></ul>
         </div>
 
-        <select id="sort" aria-label="Sort products">
-          <option value="default">Sort</option>
-          <option value="price-asc">Price ↑</option>
-          <option value="price-desc">Price ↓</option>
-          <option value="name">Name</option>
-        </select>
+        <div class="mini-controls">
+          <label class="sr-only" for="sort">Sort</label>
+          <select id="sort" aria-label="Sort products">
+            <option value="default">Sort</option>
+            <option value="price-asc">Price ↑</option>
+            <option value="price-desc">Price ↓</option>
+            <option value="name">Name</option>
+            <option value="rating">Rating</option>
+          </select>
 
-        <button id="cartButton" class="cart-btn" aria-label="Open cart">Cart (<span id="cartCount">0</span>)</button>
+          <div class="price-range">
+            <input id="priceMin" type="number" min="0" value="0" aria-label="Min price">
+            <span class="dash">—</span>
+            <input id="priceMax" type="number" min="0" value="100" aria-label="Max price">
+          </div>
+
+          <button id="themeToggle" class="theme-toggle" aria-pressed="false" title="Toggle theme">🌓</button>
+
+          <button id="cartButton" class="cart-btn" aria-label="Open cart">Cart (<span id="cartCount">0</span>)</button>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="container" id="main">
+  <main class="container">
     <section class="hero">
       <div class="hero-inner">
         <h2>Curated activewear — sustainably stylish</h2>
@@ -48,33 +62,73 @@
       </div>
     </section>
 
+    <section class="toolbar">
+      <div class="range-slider">
+        <label for="range" class="sr-only">Price range</label>
+        <input id="range" type="range" min="0" max="200" value="100" />
+        <div class="range-value">Up to <span id="rangeValue">$100</span></div>
+      </div>
+    </section>
+
     <section id="products" class="product-grid" aria-live="polite">
-      <!-- Product cards will render here -->
+      <!-- product cards injected here -->
+    </section>
+
+    <section class="reviews" id="reviewsSection">
+      <h3>Customer reviews</h3>
+      <div id="reviewsList" class="reviews-list">
+        <!-- example reviews -->
+        <article class="review">
+          <div class="review-header"><strong>Ravi K.</strong><span class="stars">★★★★☆</span></div>
+          <p>Good quality. Fast delivery. Comfortable fit.</p>
+        </article>
+        <article class="review">
+          <div class="review-header"><strong>Neha S.</strong><span class="stars">★★★★★</span></div>
+          <p>Excellent value for money — loved the material.</p>
+        </article>
+      </div>
+
+      <form id="reviewForm" class="review-form" aria-label="Add review">
+        <h4>Leave a review</h4>
+        <input id="reviewName" type="text" placeholder="Your name" required>
+        <select id="reviewRating" aria-label="Rating">
+          <option value="5">5 — Excellent</option>
+          <option value="4">4 — Very good</option>
+          <option value="3">3 — Good</option>
+          <option value="2">2 — Fair</option>
+          <option value="1">1 — Poor</option>
+        </select>
+        <textarea id="reviewText" rows="3" placeholder="Your comments" required></textarea>
+        <button type="submit" class="btn-primary">Submit review</button>
+      </form>
     </section>
   </main>
 
   <aside id="cartPanel" class="cart-panel" aria-hidden="true">
-    <header>
+    <header class="cart-header">
       <h3>Your Cart</h3>
       <button id="closeCart" aria-label="Close cart">✕</button>
     </header>
-    <div id="cartItems" class="cart-items"></div>
-    <footer>
-      <div class="cart-total">Total: <span id="cartTotal">$0</span></div>
-      <button id="checkout" class="checkout">Checkout</button>
+    <div id="cartItems" class="cart-items" role="list"></div>
+    <footer class="cart-footer">
+      <div class="cart-total">Total: <strong id="cartTotal">$0.00</strong></div>
+      <button id="checkout" class="btn-primary">Checkout</button>
     </footer>
   </aside>
 
   <div id="overlay" class="overlay" hidden></div>
 
   <template id="product-template">
-    <article class="card" tabindex="0">
+    <article class="card">
       <div class="card-media">
-        <img class="card-img" src="" alt="product" loading="lazy" />
+        <img class="card-img" src="" alt="" loading="lazy">
+        <div class="badge rating" title="Rating"></div>
       </div>
       <div class="card-body">
-        <h3 class="card-title"></h3>
-        <p class="card-price"></p>
+        <div class="card-info">
+          <h4 class="card-title"></h4>
+          <div class="card-price"></div>
+        </div>
         <div class="card-actions">
           <button class="view-btn">View</button>
           <button class="add-btn">Add to cart</button>
@@ -86,21 +140,18 @@
   <div id="productModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="modal-content">
       <button id="closeModal" class="modal-close" aria-label="Close">✕</button>
-      <img id="modalImg" src="" alt="" />
+      <img id="modalImg" src="" alt="">
       <div class="modal-body">
         <h3 id="modalTitle"></h3>
-        <p id="modalPrice"></p>
-        <p id="modalDesc" class="muted">High-quality second-hand athletic wear.</p>
-        <button id="modalAdd" class="add-btn">Add to cart</button>
+        <div class="modal-meta">
+          <div id="modalRating" class="modal-rating"></div>
+          <div id="modalPrice" class="modal-price"></div>
+        </div>
+        <p id="modalDesc" class="muted"></p>
+        <button id="modalAdd" class="btn-primary">Add to cart</button>
       </div>
     </div>
   </div>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> My Project — Thrift Store</p>
-    </div>
-  </footer>
 
   <script src="script.js"></script>
 </body>
