@@ -38,6 +38,8 @@ app.post('/api/checkout', (req, res) => {
 });
 
 // fallback for SPA
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));

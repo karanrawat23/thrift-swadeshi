@@ -3,7 +3,7 @@ const path = require('path');
 const dbFile = path.join(__dirname, 'data.sqlite');
 const db = new Database(dbFile);
 
-// setup
+// setup tables
 db.exec(`
 CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY,
@@ -50,6 +50,4 @@ module.exports = {
     const info = stmt.run(productId, name, rating, comment);
     return db.prepare('SELECT * FROM reviews WHERE id = ?').get(info.lastInsertRowid);
   }
-};cd "C:\Users\rawat\my project"
-Get-ChildItem -Name
-Test-Path .\server.js; Test-Path .\db.js
+};
